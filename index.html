@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canadian Engineering Trends | Tendances du génie canadien</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'engineering-red': '#E31937',
+                        'engineering-blue': '#0055A4',
+                        'engineering-gray': '#333F48',
+                    },
+                    fontFamily: {
+                        'sans': ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+        
+        .language-switch {
+            position: relative;
+            display: inline-block;
+            width: 80px;
+            height: 34px;
+        }
+        
+        .language-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #0055A4;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: #E31937;
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(46px);
+        }
+        
+        .slider:after {
+            content: "EN";
+            color: white;
+            display: block;
+            position: absolute;
+            transform: translate(-50%, -50%);
+            top: 50%;
+            left: 30%;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        input:checked + .slider:after {
+            content: "FR";
+            left: 70%;
+        }
+        
+        .animate-fade {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .tab-active {
+            border-bottom: 3px solid #E31937;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="font-sans bg-gray-50 text-engineering-gray">
+    <div class="min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="bg-white shadow-sm">
+            <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-hard-hat text-engineering-red text-2xl"></i>
+                    <h1 class="text-xl font-bold text-engineering-gray" id="header-title">Canadian Engineering Career Trends</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span id="language-label">Language:</span>
+                    <label class="language-switch">
+                        <input type="checkbox" id="language-toggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-grow container mx-auto px-4 py-8">
+            <!-- Dashboard Overview -->
+            <section class="mb-12">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+                    <h2 class="text-2xl font-bold" id="overview-title">Engineering Career Overview</h2>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white p-6 rounded-lg shadow-sm border-l-4 border-engineering-red">
+                        <h3 class="text-sm font-medium text-gray-500 mb-1" id="employment-title">Employment Growth</h3>
+                        <p class="text-2xl font-bold">+8.2%</p>
+                        <p class="text-sm text-green-600 flex items-center">
+                            <i class="fas fa-arrow-up mr-1"></i>
+                            <span id="employment-change">+1.2% from last year</span>
+                        </p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm border-l-4 border-engineering-blue">
+                        <h3 class="text-sm font-medium text-gray-500 mb-1" id="salary-title">Average Salary</h3>
+                        <p class="text-2xl font-bold">$92,450</p>
+                        <p class="text-sm text-green-600 flex items-center">
+                            <i class="fas fa-arrow-up mr-1"></i>
+                            <span id="salary-change">+3.5% from last year</span>
+                        </p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm border-l-4 border-engineering-gray">
+                        <h3 class="text-sm font-medium text-gray-500 mb-1" id="demand-title">Job Demand</h3>
+                        <p class="text-2xl font-bold">High</p>
+                        <p class="text-sm text-green-600" id="demand-change">15% more postings than last year</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm border-l-4 border-yellow-500">
+                        <h3 class="text-sm font-medium text-gray-500 mb-1" id="satisfaction-title">Job Satisfaction</h3>
+                        <p class="text-2xl font-bold">82%</p>
+                        <p class="text-sm text-gray-600" id="satisfaction-change">Steady from last year</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tabs Navigation -->
+            <div class="border-b border-gray-200 mb-8">
+                <nav class="-mb-px flex space-x-8">
+                    <button class="py-4 px-1 tab-active" id="trends-tab">
+                        <span class="text-sm font-medium" id="trends-tab-text">Trends</span>
+                    </button>
+                    <button class="py-4 px-1 border-transparent" id="regions-tab">
+                        <span class="text-sm font-medium" id="regions-tab-text">Regions</span>
+                    </button>
+                    <button class="py-4 px-1 border-transparent" id="disciplines-tab">
+                        <span class="text-sm font-medium" id="disciplines-tab-text">Disciplines</span>
+                    </button>
+                    <button class="py-4 px-1 border-transparent" id="education-tab">
+                        <span class="text-sm font-medium" id="education-tab-text">Education</span>
+                    </button>
+                </nav>
+            </div>
+
+            <!-- Tab Content -->
+            <div class="animate-fade">
+                <!-- Trends Tab Content -->
+                <div id="trends-content" class="space-y-8">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <!-- Employment Chart -->
+                        <div class="bg-white p-6 rounded-lg shadow-sm">
+                            <h3 class="text-lg font-medium mb-4" id="employment-chart-title">Engineering Employment Growth (2018-2023)</h3>
+                            <div class="chart-container">
+                                <canvas id="employmentChart"></canvas>
+                            </div>
+                        </div>
+                        
+                        <!-- Salary Chart -->
+                        <div class="bg-white p-6 rounded-lg shadow-sm">
+                            <h3 class="text-lg font-medium mb-4" id="salary-chart-title">Average Salary by Experience Level</h3>
+                            <div class="chart-container">
+                                <canvas id="salaryChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <!-- Job Postings -->
+                        <div class="bg-white p-6 rounded-lg shadow-sm">
+                            <h3 class="text-lg font-medium mb-4" id="postings-title">Monthly Job Postings</h3>
+                            <div class="chart-container">
+                                <canvas id="postingsChart"></canvas>
+                            </div>
+                        </div>
+                        
+                        <!-- Satisfaction -->
+                        <div class="bg-white p-6 rounded-lg shadow-sm">
+                            <h3 class="text-lg font-medium mb-4" id="satisfaction-chart-title">Job Satisfaction by Discipline</h3>
+                            <div class="chart-container">
+                                <canvas id="satisfactionChart"></canvas>
+                            </div>
+                        </div>
+                        
+                        <!-- Future Outlook -->
+                        <div class="bg-white p-6 rounded-lg shadow-sm">
+                            <h3 class="text-lg font-medium mb-4" id="outlook-title">Future Job Outlook (2023-2028)</h3>
+                            <div class="flex flex-col h-64 justify-center items-center">
+                                <div class="radial-progress text-engineering-red" style="--value:85; --size:12rem; --thickness: 12px;">85%</div>
+                                <p class="mt-4 text-center" id="outlook-text">Very positive outlook for engineering careers in Canada</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Regions Tab Content (Hidden by default) -->
+                <div id="regions-content" class="hidden space-y-8">
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h3 class="text-lg font-medium mb-4" id="regions-map-title">Engineering Employment by Province</h3>
+                        <div class="chart-container">
+                            <canvas id="regionsChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div class="bg-white p-6 rounded-lg shadow-sm">
+                            <h3 class="text-lg font-medium mb-4" id="cities-title">Top Cities for Engineering Jobs</h3>
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <span class="font-medium">Toronto, ON</span>
+                                    <span class="text-engineering-red font-bold">32%</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="font-medium">Montreal, QC</span>
+                                    <span class="text-engineering-red font-bold">22%</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="font-medium">Calgary, AB</span>
+                                    <span class="text-engineering-red font-bold">15%</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="font-medium">Vancouver, BC</span>
+                                    <span class="text-engineering-red font-bold">12%</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="font-medium">Ottawa, ON</span>
+                                    <span class="text-engineering-red font-bold">8%</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white p-6 rounded-lg shadow-sm">
+                            <h3 class="text-lg font-medium mb-4" id="salary-regions-title">Average Salary by Province</h3>
+                            <div class="chart-container">
+                                <canvas id="salaryRegionsChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Disciplines Tab Content (Hidden by default) -->
+                <div id="disciplines-content" class="hidden space-y-8">
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h3 class="text-lg font-medium mb-4" id="disciplines-title">Employment by Engineering Discipline</h3>
+                        <div class="chart-container">
+                            <canvas id="disciplinesChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div class="bg-white p-6 rounded-lg shadow-sm">
+                            <h3 class="text-lg font-medium mb-4" id="growth-disciplines-title">Projected Growth by Discipline (2023-2028)</h3>
+                            <div class="chart-container">
+                                <canvas id="growthDisciplinesChart"></canvas>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white p-6 rounded-lg shadow-sm">
+                            <h3 class="text-lg font-medium mb-4" id="salary-disciplines-title">Average Salary by Discipline</h3>
+                            <div class="chart-container">
+                                <canvas id="salaryDisciplinesChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Education Tab Content (Hidden by default) -->
+                <div id="education-content" class="hidden space-y-8">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div class="bg-white p-6 rounded-lg shadow-sm">
+                            <h3 class="text-lg font-medium mb-4" id="degrees-title">Degrees Held by Engineers</h3>
+                            <div class="chart-container">
+                                <canvas id="degreesChart"></canvas>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white p-6 rounded-lg shadow-sm">
+                            <h3 class="text-lg font-medium mb-4" id="certifications-title">Professional Certifications</h3>
+                            <div class="chart-container">
+                                <canvas id="certificationsChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h3 class="text-lg font-medium mb-4" id="universities-title">Top Engineering Universities in Canada</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center space-x-4">
+                                <span class="w-8 h-8 flex items-center justify-center bg-engineering-red text-white rounded-full font-bold">1</span>
+                                <span>University of Toronto</span>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <span class="w-8 h-8 flex items-center justify-center bg-engineering-blue text-white rounded-full font-bold">2</span>
+                                <span>University of Waterloo</span>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <span class="w-8 h-8 flex items-center justify-center bg-engineering-gray text-white rounded-full font-bold">3</span>
+                                <span>McGill University</span>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <span class="w-8 h-8 flex items-center justify-center bg-gray-300 text-engineering-gray rounded-full font-bold">4</span>
+                                <span>University of British Columbia</span>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <span class="w-8 h-8 flex items-center justify-center bg-gray-300 text-engineering-gray rounded-full font-bold">5</span>
+                                <span>University of Alberta</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-engineering-gray text-white py-8">
+            <div class="container mx-auto px-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div>
+                        <h3 class="text-lg font-bold mb-4" id="footer-about-title">About This Dashboard</h3>
+                        <p class="text-sm" id="footer-about-text">
+                            This dashboard provides insights into engineering career trends across Canada, 
+                            including employment statistics, salary data, and regional variations.
+                        </p>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold mb-4" id="footer-sources-title">Data Sources</h3>
+                        <ul class="text-sm space-y-2">
+                            <li id="source-1">• Statistics Canada</li>
+                            <li id="source-2">• Engineers Canada</li>
+                            <li id="source-3">• Job Bank Canada</li>
+                            <li id="source-4">• Provincial Engineering Associations</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold mb-4" id="footer-contact-title">Contact</h3>
+                        <ul class="text-sm space-y-2">
+                            <li class="flex items-center space-x-2">
+                                <i class="fas fa-envelope"></i>
+                                <span id="contact-email">info@engineeringtrends.ca</span>
+                            </li>
+                            <li class="flex items-center space-x-2">
+                                <i class="fas fa-phone"></i>
+                                <span id="contact-phone">+1 (800) 123-4567</span>
+                            </li>
+                            <li class="flex items-center space-x-2">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span id="contact-address">123 Engineering Way, Ottawa, ON</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="border-t border-gray-600 mt-8 pt-6 text-center text-sm">
+                    <p id="copyright-text">© 2023 Canadian Engineering Career Trends. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Language toggle functionality
+        const languageToggle = document.getElementById('language-toggle');
+        let currentLanguage = 'en';
+        
+        // English translations
+        const enTranslations = {
+            'header-title': 'Canadian Engineering Career Trends',
+            'language-label': 'Language:',
+            'overview-title': 'Engineering Career Overview',
+            'update-btn': '<i class="fas fa-sync-alt mr-2"></i><span>Update Data</span>',
+            'export-btn': '<i class="fas fa-download mr-2"></i><span>Export Report</span>',
+            'employment-title': 'Employment Growth',
+            'employment-change': '+1.2% from last year',
+            'salary-title': 'Average Salary',
+            'salary-change': '+3.5% from last year',
+            'demand-title': 'Job Demand',
+            'demand-change': '15% more postings than last year',
+            'satisfaction-title': 'Job Satisfaction',
+            'satisfaction-change': 'Steady from last year',
+            'trends-tab-text': 'Trends',
+            'regions-tab-text': 'Regions',
+            'disciplines-tab-text': 'Disciplines',
+            'education-tab-text': 'Education',
+            'employment-chart-title': 'Engineering Employment Growth (2018-2023)',
+            'salary-chart-title': 'Average Salary by Experience Level',
+            'postings-title': 'Monthly Job Postings',
+            'satisfaction-chart-title': 'Job Satisfaction by Discipline',
+            'outlook-title': 'Future Job Outlook (2023-2028)',
+            'outlook-text': 'Very positive outlook for engineering careers in Canada',
+            'regions-map-title': 'Engineering Employment by Province',
+            'cities-title': 'Top Cities for Engineering Jobs',
+            'salary-regions-title': 'Average Salary by Province',
+            'disciplines-title': 'Employment by Engineering Discipline',
+            'growth-disciplines-title': 'Projected Growth by Discipline (2023-2028)',
+            'salary-disciplines-title': 'Average Salary by Discipline',
+            'degrees-title': 'Degrees Held by Engineers',
+            'certifications-title': 'Professional Certifications',
+            'universities-title': 'Top Engineering Universities in Canada',
+            'footer-about-title': 'About This Dashboard',
+            'footer-about-text': 'This dashboard provides insights into engineering career trends across Canada, including employment statistics, salary data, and regional variations.',
+            'footer-sources-title': 'Data Sources',
+            'source-1': '• Statistics Canada',
+            'source-2': '• Engineers Canada',
+            'source-3': '• Job Bank Canada',
+            'source-4': '• Provincial Engineering Associations',
+            'footer-contact-title': 'Contact',
+            'contact-email': 'info@engineeringtrends.ca',
+            'contact-phone': '+1 (800) 123-4567',
+            'contact-address': '123 Engineering Way, Ottawa, ON',
+            'copyright-text': '© 2023 Canadian Engineering Career Trends. All rights reserved.'
+        };
+        
+        // French translations
+        const frTranslations = {
+            'header-title': 'Tendances des carrières en génie au Canada',
+            'language-label': 'Langue:',
+            'overview-title': 'Aperçu des carrières en génie',
+            'update-btn': '<i class="fas fa-sync-alt mr-2"></i><span>Mettre à jour</span>',
+            'export-btn': '<i class="fas fa-download mr-2"></i><span>Exporter le rapport</span>',
+            'employment-title': 'Croissance de l\'emploi',
+            'employment-change': '+1,2% par rapport à l\'année dernière',
+            'salary-title': 'Salaire moyen',
+            'salary-change': '+3,5% par rapport à l\'année dernière',
+            'demand-title': 'Demande d\'emploi',
+            'demand-change': '15% plus d\'offres que l\'année dernière',
+            'satisfaction-title': 'Satisfaction au travail',
+            'satisfaction-change': 'Stable par rapport à l\'année dernière',
+            'trends-tab-text': 'Tendances',
+            'regions-tab-text': 'Régions',
+            'disciplines-tab-text': 'Disciplines',
+            'education-tab-text': 'Éducation',
+            'employment-chart-title': 'Croissance de l\'emploi en génie (2018-2023)',
+            'salary-chart-title': 'Salaire moyen par niveau d\'expérience',
+            'postings-title': 'Offres d\'emploi mensuelles',
+            'satisfaction-chart-title': 'Satisfaction au travail par discipline',
+            'outlook-title': 'Perspectives d\'emploi futures (2023-2028)',
+            'outlook-text': 'Perspectives très positives pour les carrières en génie au Canada',
+            'regions-map-title': 'Emploi en génie par province',
+            'cities-title': 'Principales villes pour les emplois en génie',
+            'salary-regions-title': 'Salaire moyen par province',
+            'disciplines-title': 'Emploi par discipline de génie',
+            'growth-disciplines-title': 'Croissance projetée par discipline (2023-2028)',
+            'salary-disciplines-title': 'Salaire moyen par discipline',
+            'degrees-title': 'Diplômes détenus par les ingénieurs',
+            'certifications-title': 'Certifications professionnelles',
+            'universities-title': 'Meilleures universités en génie au Canada',
+            'footer-about-title': 'À propos de ce tableau de bord',
+            'footer-about-text': 'Ce tableau de bord fournit des informations sur les tendances des carrières en génie à travers le Canada, y compris les statistiques d\'emploi, les données salariales et les variations régionales.',
+            'footer-sources-title': 'Sources de données',
+            'source-1': '• Statistique Canada',
+            'source-2': '• Ingénieurs Canada',
+            'source-3': '• Guichet-Emplois',
+            'source-4': '• Associations provinciales d\'ingénieurs',
+            'footer-contact-title': 'Contact',
+            'contact-email': 'info@tendancesgenie.ca',
+            'contact-phone': '+1 (800) 123-4567',
+            'contact-address': '123 Avenue Génie, Ottawa, ON',
+            'copyright-text': '© 2023 Tendances des carrières en génie au Canada. Tous droits réservés.'
+        };
+        
+        // Function to update the language
+        function updateLanguage() {
+            const translations = currentLanguage === 'en' ? enTranslations : frTranslations;
+            
+            for (const [key, value] of Object.entries(translations)) {
+                const element = document.getElementById(key);
+                if (element) {
+                    if (key.endsWith('-btn')) {
+                        element.innerHTML = value;
+                    } else {
+                        element.textContent = value;
+                    }
+                }
+            }
+        }
+        
+        // Event listener for language toggle
+        languageToggle.addEventListener('change', function() {
+            currentLanguage = this.checked ? 'fr' : 'en';
+            updateLanguage();
+        });
+        
+        // Tab switching functionality
+        const tabs = ['trends', 'regions', 'disciplines', 'education'];
+        
+        tabs.forEach(tab => {
+            const tabButton = document.getElementById(`${tab}-tab`);
+            const tabContent = document.getElementById(`${tab}-content`);
+            
+            tabButton.addEventListener('click', () => {
+                // Hide all tab contents
+                tabs.forEach(t => {
+                    document.getElementById(`${t}-content`).classList.add('hidden');
+                    document.getElementById(`${t}-tab`).classList.remove('tab-active');
+                    document.getElementById(`${t}-tab`).classList.add('border-transparent');
+                });
+                
+                // Show selected tab content
+                tabContent.classList.remove('hidden');
+                tabButton.classList.add('tab-active');
+                tabButton.classList.remove('border-transparent');
+            });
+        });
+        
+        // Initialize charts
+        document.addEventListener('DOMContentLoaded', function() {
+            // Employment Growth Chart
+            const employmentCtx = document.getElementById('employmentChart').getContext('2d');
+            const employmentChart = new Chart(employmentCtx, {
+                type: 'line',
+                data: {
+                    labels: ['2018', '2019', '2020', '2021', '2022', '2023'],
+                    datasets: [{
+                        label: 'Employment Growth (%)',
+                        data: [3.2, 4.5, -1.8, 5.2, 7.0, 8.2],
+                        borderColor: '#E31937',
+                        backgroundColor: 'rgba(227, 25, 55, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false
+                        }
+                    }
+                }
+            });
+            
+            // Salary by Experience Chart
+            const salaryCtx = document.getElementById('salaryChart').getContext('2d');
+            const salaryChart = new Chart(salaryCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Entry (0-2 yrs)', 'Mid (3-7 yrs)', 'Senior (8-15 yrs)', 'Executive (15+ yrs)'],
+                    datasets: [{
+                        label: 'Average Salary ($)',
+                        data: [65000, 85000, 105000, 135000],
+                        backgroundColor: [
+                            'rgba(0, 85, 164, 0.7)',
+                            'rgba(0, 85, 164, 0.8)',
+                            'rgba(0, 85, 164, 0.9)',
+                            'rgba(0, 85, 164, 1)'
+                        ],
+                        borderColor: [
+                            'rgba(0, 85, 164, 1)',
+                            'rgba(0, 85, 164, 1)',
+                            'rgba(0, 85, 164, 1)',
+                            'rgba(0, 85, 164, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+            
+            // Job Postings Chart
+            const postingsCtx = document.getElementById('postingsChart').getContext('2d');
+            const postingsChart = new Chart(postingsCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    datasets: [{
+                        label: '2022',
+                        data: [3200, 2900, 3500, 3800, 4000, 4200, 3900, 4100, 4300, 4500, 4700, 4400],
+                        borderColor: 'rgba(51, 63, 72, 0.5)',
+                        borderWidth: 1,
+                        tension: 0.3
+                    }, {
+                        label: '2023',
+                        data: [3600, 3300, 4000, 4200, 4500, 4800, 4600, 4900, 5200, 5500, 5800, 5400],
+                        borderColor: '#E31937',
+                        borderWidth: 2,
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        }
+                    }
+                }
+            });
+            
+            // Satisfaction by Discipline Chart
+            const satisfactionCtx = document.getElementById('satisfactionChart').getContext('2d');
+            const satisfactionChart = new Chart(satisfactionCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['Civil', 'Mechanical', 'Electrical', 'Software', 'Chemical', 'Industrial'],
+                    datasets: [{
+                        label: 'Job Satisfaction (%)',
+                        data: [85, 80, 82, 88, 78, 83],
+                        backgroundColor: 'rgba(227, 25, 55, 0.2)',
+                        borderColor: '#E31937',
+                        borderWidth: 2,
+                        pointBackgroundColor: '#E31937',
+                        pointBorderColor: '#fff',
+                        pointHoverRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: {
+                                display: true
+                            },
+                            suggestedMin: 50,
+                            suggestedMax: 100
+                        }
+                    }
+                }
+            });
+            
+            // Regions Chart (Provinces)
+            const regionsCtx = document.getElementById('regionsChart').getContext('2d');
+            const regionsChart = new Chart(regionsCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['ON', 'QC', 'AB', 'BC', 'SK', 'MB', 'NS', 'NB', 'NL', 'PE'],
+                    datasets: [{
+                        label: 'Engineering Employment (%)',
+                        data: [38, 24, 15, 12, 3, 2, 2, 1, 1, 0.5],
+                        backgroundColor: 'rgba(0, 85, 164, 0.7)',
+                        borderColor: 'rgba(0, 85, 164, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+            
+            // Salary by Province Chart
+            const salaryRegionsCtx = document.getElementById('salaryRegionsChart').getContext('2d');
+            const salaryRegionsChart = new Chart(salaryRegionsCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['AB', 'ON', 'BC', 'QC', 'SK', 'MB', 'NS', 'NB', 'NL', 'PE'],
+                    datasets: [{
+                        label: 'Average Salary ($)',
+                        data: [102000, 92500, 94500, 86500, 89500, 87500, 85500, 83500, 84500, 81500],
+                        backgroundColor: 'rgba(227, 25, 55, 0.7)',
+                        borderColor: 'rgba(227, 25, 55, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+            
+            // Disciplines Chart
+            const disciplinesCtx = document.getElementById('disciplinesChart').getContext('2d');
+            const disciplinesChart = new Chart(disciplinesCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Civil', 'Mechanical', 'Electrical', 'Software', 'Chemical', 'Industrial', 'Other'],
+                    datasets: [{
+                        data: [22, 18, 15, 25, 8, 7, 5],
+                        backgroundColor: [
+                            '#E31937',
+                            '#0055A4',
+                            '#333F48',
+                            '#FFC72C',
+                            '#4CAF50',
+                            '#9C27B0',
+                            '#FF9800'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                        }
+                    }
+                }
+            });
+            
+            // Growth by Discipline Chart
+            const growthDisciplinesCtx = document.getElementById('growthDisciplinesChart').getContext('2d');
+            const growthDisciplinesChart = new Chart(growthDisciplinesCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Software', 'Civil', 'Electrical', 'Mechanical', 'Environmental', 'Biomedical'],
+                    datasets: [{
+                        label: 'Projected Growth (%)',
+                        data: [18, 12, 10, 8, 15, 20],
+                        backgroundColor: 'rgba(51, 63, 72, 0.7)',
+                        borderColor: 'rgba(51, 63, 72, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+            
+            // Salary by Discipline Chart
+            const salaryDisciplinesCtx = document.getElementById('salaryDisciplinesChart').getContext('2d');
+            const salaryDisciplinesChart = new Chart(salaryDisciplinesCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Petroleum', 'Software', 'Electrical', 'Chemical', 'Civil', 'Industrial'],
+                    datasets: [{
+                        label: 'Average Salary ($)',
+                        data: [115000, 98000, 92000, 90000, 87000, 85000],
+                        backgroundColor: 'rgba(0, 85, 164, 0.7)',
+                        borderColor: 'rgba(0, 85, 164, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+            
+            // Degrees Chart
+            const degreesCtx = document.getElementById('degreesChart').getContext('2d');
+            const degreesChart = new Chart(degreesCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Bachelor\'s', 'Master\'s', 'PhD', 'Diploma', 'Other'],
+                    datasets: [{
+                        data: [65, 25, 5, 3, 2],
+                        backgroundColor: [
+                            '#E31937',
+                            '#0055A4',
+                            '#333F48',
+                            '#FFC72C',
+                            '#4CAF50'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                        }
+                    }
+                }
+            });
+            
+            // Certifications Chart
+            const certificationsCtx = document.getElementById('certificationsChart').getContext('2d');
+            const certificationsChart = new Chart(certificationsCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['P.Eng', 'PMP', 'CQE', 'FE', 'Other'],
+                    datasets: [{
+                        label: 'Certification Holders (%)',
+                        data: [78, 35, 15, 12, 20],
+                        backgroundColor: 'rgba(227, 25, 55, 0.7)',
+                        borderColor: 'rgba(227, 25, 55, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
